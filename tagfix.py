@@ -17,8 +17,6 @@ Options:
 import os
 import re
 
-from collections import namedtuple
-
 from docopt import docopt
 from mutagen.mp3 import MP3
 
@@ -47,19 +45,6 @@ RE_WEBSITE = re.compile(r"""
     (?:\]|\))?                      # Block Ends
 """)
 
-# Actions for rules
-RMTAG = 1
-EMPTY = 2
-
-# Regex based rules
-# TODO: Come up with more rules!
-Rule = namedtuple('Rule', ['action', 'regex'])
-rules = [
-    Rule(RMTAG, RE_WEBSITE),
-    Rule(EMPTY, RE_WEBSITE),
-]
-
-
 if __name__ == '__main__':
 
     args = docopt(__doc__, version='ID3 Tag Fixer 0.3')
@@ -81,19 +66,12 @@ if __name__ == '__main__':
             elif key in TAGS_SKIP:
                 continue
 
-            for rule in rules:
+            re_params = RE_WEBSITE, str(tags[key])
 
-                re_params = rule.regex, str(tags[key])
-
-                if rule.action == RMTAG:
-                    if re.match(*re_params):
-                        del tags[key]
-                        break
-
-                elif rule.action == EMPTY:
-                    if isinstance(tags[key], TextFrame) and re.search(*re_params):
-                        tags[key].text = [re.sub(rule.regex, "", str(tags[key]))]
-                        break
+            if re.match(*re_params):
+                del tags[key]
+            elif isinstance(tags[key], TextFrame) and re.search(*re_params):
+                tags[key].text = [re.sub(RE_WEBSITE, "", str(tags[key]))]
 
         # Fingers Crossed!
         tags.save()
