@@ -18,8 +18,8 @@ import os
 import re
 
 from docopt import docopt
-from mutagen.mp3 import MP3
 
+from mutagen.mp3 import MP3
 from mutagen.id3 import TextFrame
 
 TAGS_REMOVE = [
@@ -62,16 +62,14 @@ if __name__ == '__main__':
 
             if key in TAGS_REMOVE or 'XXX' in key:
                 del tags[key]
+            elif key in TAGS_SKIP or not isinstance(tags[key], TextFrame):
                 continue
-            elif key in TAGS_SKIP:
-                continue
-
-            re_params = RE_WEBSITE, str(tags[key])
-
-            if re.match(*re_params):
-                del tags[key]
-            elif isinstance(tags[key], TextFrame) and re.search(*re_params):
-                tags[key].text = [re.sub(RE_WEBSITE, "", str(tags[key]))]
+            elif re.search(RE_WEBSITE, str(tags[key])):
+                sub = re.sub(RE_WEBSITE, "", str(tags[key]))
+                if sub:
+                    tags[key].text = [sub]
+                else:
+                    del tags[key]
 
         # Fingers Crossed!
         tags.save()
