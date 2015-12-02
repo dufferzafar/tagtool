@@ -17,6 +17,8 @@ Options:
 import os
 import re
 
+from is_tagged import is_tagged
+
 from docopt import docopt
 
 from mutagen.mp3 import MP3
@@ -52,11 +54,13 @@ if __name__ == '__main__':
     TAGS_REMOVE.extend(args['--remove'])
     TAGS_SKIP.extend(args['--skip'])
 
-    # Todo: Handle files other than mp3
     for file in args['<file>']:
-        print(file)
 
         tags = MP3(file)
+        if is_tagged(tags):
+            continue
+
+        print(file)
 
         for key in tags.keys():
 
