@@ -35,16 +35,16 @@ TAGS_SKIP = [
 
 # A regular expression that matches websites I download music from:
 RE_WEBSITE = re.compile(r"""
-    (?ix)                           # IgnoreCase & Verbose
-    \s*                             #
-    (?:\-|\|)?                      # Separators
-    \s*                             #
-    (?:\[|\()?                      # Block Starts
-    (?:www.)?                       #
-    [\w]+                           # Sitename
-    \.                              #
-    (?:com|info|site|pk|cc|se)      # Domains
-    (?:\]|\))?                      # Block Ends
+    (?ix)                                    # IgnoreCase & Verbose
+    \s*
+    (?:\-|\|)?                               # Separators
+    \s*
+    (?:\[|\(|::)?                            # Block Starts
+    (?:www.)?
+    [\w]+                                    # Sitename
+    \.
+    (?:cc|com|info|se|site|me|mobi|pk)
+    (?:\]|\)|::)?                            # Block Ends
 """)
 
 
