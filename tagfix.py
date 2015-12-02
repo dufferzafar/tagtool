@@ -47,6 +47,14 @@ RE_WEBSITE = re.compile(r"""
     (?:\]|\))?                      # Block Ends
 """)
 
+
+def _rename(args, file, tags):
+    if args['--rename']:
+        new_path = os.path.join(os.path.dirname(file),
+                                "%s.mp3" % tags['TIT2'])
+        os.rename(file, new_path)
+
+
 if __name__ == '__main__':
 
     args = docopt(__doc__, version='ID3 Tag Fixer 0.3')
@@ -58,6 +66,7 @@ if __name__ == '__main__':
 
         tags = MP3(file)
         if is_tagged(tags):
+            _rename(args, file, tags)
             continue
 
         print(file)
@@ -78,8 +87,4 @@ if __name__ == '__main__':
         # Fingers Crossed!
         tags.save()
 
-        # Rename file with song title
-        if args['--rename']:
-            new_path = os.path.join(os.path.dirname(file),
-                                    "%s.mp3" % tags['TIT2'])
-            os.rename(file, new_path)
+        _rename(args, file, tags)
