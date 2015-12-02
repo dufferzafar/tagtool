@@ -24,9 +24,11 @@ from docopt import docopt
 from mutagen.mp3 import MP3
 from mutagen.id3 import TextFrame
 
+
 TAGS_REMOVE = [
     "COMM::'eng'",
-    "TRCK", "TSOT", "TENC", "TPOS", "TCON", "TCOM",
+    "TCOM", "TCON", "TCOP", "TCMP", "TENC",
+    "TPOS", "TPUB", "TRCK", "TSOT", "TSSE",
     "WCOM", "WFED", "WOAF", "WOAR", "WOAS", "WORS",
 ]
 TAGS_SKIP = [
@@ -71,9 +73,10 @@ if __name__ == '__main__':
 
         print(file)
 
+        # Clean tags
         for key in tags.keys():
 
-            if key in TAGS_REMOVE or 'XXX' in key:
+            if key in TAGS_REMOVE or 'XXX' in key or 'USLT' in key:
                 del tags[key]
             elif key in TAGS_SKIP or not isinstance(tags[key], TextFrame):
                 continue
@@ -84,7 +87,7 @@ if __name__ == '__main__':
                 else:
                     del tags[key]
 
-        # Fingers Crossed!
+        # Fingers crossed!
         tags.save()
 
         _rename(args, file, tags)
