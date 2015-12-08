@@ -37,6 +37,7 @@ def _rename(args, file, tags):
         new_path = os.path.join(os.path.dirname(file),
                                 "%s.mp3" % tags['TIT2'])
         os.rename(file, new_path)
+        return new_path
 
 
 if __name__ == '__main__':
@@ -48,12 +49,15 @@ if __name__ == '__main__':
 
     for file in args['<file>']:
 
-        tags = MP3(file)
-        if is_tagged(tags):
-            _rename(args, file, tags)
+        try:
+            tags = MP3(file)
+        except:
+            print("Couldn't read: %s" % file)
             continue
 
-        print(file)
+        if is_tagged(tags):
+            print("Already tagged: %s " % _rename(args, file, tags))
+            continue
 
         # Clean tags
         for key in tags.keys():
@@ -72,4 +76,4 @@ if __name__ == '__main__':
         # Fingers crossed!
         tags.save()
 
-        _rename(args, file, tags)
+        print("Processed:\t%s" % _rename(args, file, tags))
