@@ -24,30 +24,12 @@ from docopt import docopt
 from mutagen.mp3 import MP3
 from mutagen.id3 import TextFrame
 
-
-TAGS_REMOVE = [
-    "COMM::'eng'",
-    "TCOM", "TCON", "TCOP", "TCMP", "TENC",
-    "TPOS", "TPUB", "TRCK", "TSOT", "TSSE",
-    "WCOM", "WFED", "WOAF", "WOAR", "WOAS", "WORS",
-]
-TAGS_SKIP = [
-    "APIC:",
-]
-
-# A regular expression that matches websites I download music from:
-RE_WEBSITE = re.compile(r"""
-    (?ix)                                    # IgnoreCase & Verbose
-    \s*
-    (?:\-|\|)?                               # Separators
-    \s*
-    (?:\[|\(|::)?                            # Block Starts
-    (?:www.)?
-    [\w]+                                    # Sitename
-    \.
-    (?:cc|com|info|se|site|me|mobi|pk)
-    (?:\]|\)|::)?                            # Block Ends
-""")
+from config import (
+    RE_WEBSITE,
+    TAGS_SKIP,
+    TAGS_REMOVE,
+    TAGS_REMOVE_PREFIX,
+)
 
 
 def _rename(args, file, tags):
@@ -76,7 +58,7 @@ if __name__ == '__main__':
         # Clean tags
         for key in tags.keys():
 
-            if key in TAGS_REMOVE or 'XXX' in key or 'USLT' in key:
+            if key in TAGS_REMOVE or key.startswith(TAGS_REMOVE_PREFIX):
                 del tags[key]
             elif key in TAGS_SKIP or not isinstance(tags[key], TextFrame):
                 continue
