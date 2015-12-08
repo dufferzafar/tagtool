@@ -14,4 +14,4 @@ def is_tagged(tags):
     if ufid not in tags:
         return False
     else:
-        return re.match(UUID_RE, tags[ufid].data) is not None
+        return re.match(UUID_RE, tags[ufid].data.decode('ascii')) is not None
