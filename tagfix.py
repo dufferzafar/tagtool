@@ -42,7 +42,7 @@ def _rename(args, file, tags):
 
 if __name__ == '__main__':
 
-    args = docopt(__doc__, version='ID3 Tag Fixer 0.3')
+    args = docopt(__doc__, version='ID3 Tag Fixer 0.5')
 
     TAGS_REMOVE.extend(args['--remove'])
     TAGS_SKIP.extend(args['--skip'])
