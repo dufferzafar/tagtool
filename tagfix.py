@@ -60,7 +60,7 @@ if __name__ == '__main__':
             continue
 
         # Clean tags
-        for key in tags.keys():
+        for key in list(tags.keys()):
 
             if key in TAGS_REMOVE or key.startswith(TAGS_REMOVE_PREFIX):
                 del tags[key]
