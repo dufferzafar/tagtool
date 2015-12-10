@@ -1,0 +1,70 @@
+#!/usr/bin/python3
+
+"""
+ID3 Tag Tool
+
+Usage:
+    tagtool <command> [<args>...]
+
+Commands:
+    coverart    Extract coverart of a file as 'cover.jpg'
+    replace     Perform regex replace on tags
+    remove      Remove tag frames
+    rename      Rename files to format: "%TrackTitle%.mp3"
+    help        Read about a specific command
+
+Examples:
+    tagtool extract --frame=<tag> <file> [--output=<file>]
+"""
+
+import textwrap
+
+from docopt import docopt
+
+import tagtool
+
+
+def _get_doc(command):
+    return textwrap.dedent(getattr(tagtool, command).__doc__).strip()
+
+
+if __name__ == '__main__':
+    args = docopt(__doc__, options_first=True, version='ID3 Tag Tool 0.2.1')
+    argv = [args['<command>']] + args['<args>']
+
+    command = argv[0]
+    if command == 'help':
+        if not args['<args>']:
+            exit(textwrap.dedent(__doc__).strip())
+
+        if hasattr(tagtool, argv[1]):
+            exit(_get_doc(argv[1]))
+        else:
+            exit("%r is not a tagtool command. See 'tagtool help'." % argv[1])
+
+    if not hasattr(tagtool, command):
+        exit(textwrap.dedent(__doc__).strip())
+
+    args = docopt(_get_doc(command), argv=argv)
+
+    if command == 'replace':
+        tagtool.replace(
+            tags=args['<file>'],
+            pattern=args['--pattern'],
+            repl=args['--repl'],
+            prune=args['--prune'],
+            frames=args['--frames'].split(',')
+            if args['--frames'] else [],
+            frames_skip=args['--frames_skip'].split(',')
+            if args['--frames_skip'] else [],
+        )
+
+    elif command == 'remove':
+        tagtool.remove(
+            tags=args['<file>'],
+            frames=args['--frames'].split(',') if args['--frames'] else [],
+            prefix=args['--prefix']
+        )
+
+    elif command == 'rename':
+        tagtool.rename(args['<file>'])
