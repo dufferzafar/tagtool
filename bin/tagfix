@@ -1,0 +1,51 @@
+#!/usr/bin/python3
+
+"""ID3 Tag Fixer.
+
+Usage: tagfix <file>...
+"""
+
+from docopt import docopt
+
+from mutagen.mp3 import MP3
+
+import tagtool
+from config import (
+    RE_WEBSITE,
+    TAGS_SKIP,
+    TAGS_REMOVE,
+    TAGS_REMOVE_PREFIX,
+)
+
+
+if __name__ == '__main__':
+
+    args = docopt(__doc__, version='ID3 Tag Fixer 0.5')
+
+    for file in args['<file>']:
+
+        try:
+            tags = MP3(file)
+        except:
+            print("Couldn't read: %s" % file)
+            continue
+
+        if tagtool.is_tagged(tags):
+            new_name = tagtool.rename(file, tags)
+            print("Already tagged: %s " % new_name)
+            continue
+
+        # Remove certain kinds of tags
+        tagtool.remove(tags, TAGS_REMOVE)
+        tagtool.remove(tags, TAGS_REMOVE_PREFIX, prefix=True)
+
+        # Remove all instances of a website regex in all tags
+        tagtool.replace(tags, RE_WEBSITE, "", prune_empty=True, frames_skip=TAGS_SKIP)
+
+        # Fingers crossed!
+        tags.save()
+
+        # Rename the file
+        new_name = tagtool.rename(file, tags)
+
+        print("Processed:\t%s" % new_name)
