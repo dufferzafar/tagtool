@@ -10,6 +10,7 @@ setup(
     packages=['tagtool'],
     version=tagtool.version,
     description='Tagtool allows you to perform mass ID3 tag cleaning operations.',
+    long_description=open('Readme.md').read(),
     url='https://github.com/dufferzafar/tagtool',
     license='MIT',
     author='Shadab Zafar',
