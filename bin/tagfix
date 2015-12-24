@@ -5,17 +5,39 @@
 Usage: tagfix <file>...
 """
 
-from docopt import docopt
+import re
 
+from docopt import docopt
 from mutagen.mp3 import MP3
 
 import tagtool
-from config import (
-    RE_WEBSITE,
-    TAGS_SKIP,
-    TAGS_REMOVE,
-    TAGS_REMOVE_PREFIX,
-)
+
+FRAMES_SKIP = [
+    "APIC:",
+]
+
+FRAMES_REMOVE = [
+    "TCOM", "TCON", "TCOP", "TCMP", "TENC", "TMED", "TPOS", "TPUB", "TRCK",
+    "TSOT", "TSSE", "WFED", "WOAF", "WOAS", "WORS",
+]
+
+FRAMES_REMOVE_PREFIX = [
+    "COMM", "POPM", "USLT", "WCOM", "WOAR", "WXXX", "XXX",
+]
+
+# A regular expression that matches websites I download music from:
+RE_WEBSITE = re.compile(r"""
+    (?ix)                                    # IgnoreCase & Verbose
+    \s*
+    (?:\-|\|)?                               # Separators
+    \s*
+    (?:\[|\(|::)?                            # Block Starts
+    (?:www.)?
+    [\w]+                                    # Sitename
+    \.
+    (?:cc|com|in|info|se|site|me|mobi|pk)
+    (?:\]|\)|::)?                            # Block Ends
+""")
 
 
 if __name__ == '__main__':
@@ -35,17 +57,32 @@ if __name__ == '__main__':
             print("Already tagged: %s " % new_name)
             continue
 
-        # Remove certain kinds of tags
-        tagtool.remove(tags, TAGS_REMOVE)
-        tagtool.remove(tags, TAGS_REMOVE_PREFIX, prefix=True)
+        # Remove certain kinds of frames
+        tagtool.commands.remove(
+            tags=tags,
+            frames=FRAMES_REMOVE
+        )
 
-        # Remove all instances of a website regex in all tags
-        tagtool.replace(tags, RE_WEBSITE, "", prune_empty=True, frames_skip=TAGS_SKIP)
+        # Remove frames that have some prefix
+        tagtool.commands.remove(
+            tags=tags,
+            frames=FRAMES_REMOVE_PREFIX,
+            prefix=True
+        )
+
+        # Remove all instances of a website regex in all frames
+        tagtool.commands.replace(
+            tags=tags,
+            pattern=RE_WEBSITE,
+            repl="",
+            prune=True,
+            frames_skip=FRAMES_SKIP
+        )
 
         # Fingers crossed!
         tags.save()
 
         # Rename the file
-        new_name = tagtool.rename(file, tags)
+        new_name = tagtool.commands.rename(file, tags)
 
         print("Processed:\t%s" % new_name)
