@@ -1,3 +1,5 @@
+import tagtool
+
 try:
     from setuptools import setup
 except ImportError:
@@ -6,7 +8,7 @@ except ImportError:
 setup(
     name='tagtool',
     packages=['tagtool'],
-    version='1.0',
+    version=tagtool.version,
     description='Tagtool allows you to perform mass ID3 tag cleaning operations.',
     url='https://github.com/dufferzafar/tagtool',
     license='MIT',

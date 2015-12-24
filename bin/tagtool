@@ -28,7 +28,11 @@ def _get_doc(command):
 
 
 if __name__ == '__main__':
-    old_args = docopt(__doc__, options_first=True, version='ID3 Tag Tool 0.7')
+    old_args = docopt(
+        __doc__,
+        version="tagtool version " + tagtool.version,
+        options_first=True,
+    )
     argv = [old_args['<command>']] + old_args['<args>']
 
     command = argv[0]

@@ -4,6 +4,8 @@ from mutagen.mp3 import MP3
 from . import commands
 from .is_tagged import is_tagged
 
+version = "1.0.2"
+
 
 def _process(files, func, args, skip_tagged=True, needs_file=False):
     """ Apply func to ID3 tags of files. """
