@@ -3,23 +3,31 @@ try:
 except ImportError:
     from distutils.core import setup
 
-config = {
-    'name': 'tagtool',
-    'packages': ['tagtool'],
-    'version': '0.6',
-    'description': 'Perform mass ID3 tagging operations.',
-    'url': 'https://github.com/dufferzafar/tagtool',
-    'license': 'MIT',
-    'author': 'Shadab Zafar',
-    'author_email': 'dufferzafar0@gmail.com',
-    'install_requires': [
+setup(
+    name='tagtool',
+    packages=['tagtool'],
+    version='1.0',
+    description='Tagtool allows you to perform mass ID3 tag cleaning operations.',
+    url='https://github.com/dufferzafar/tagtool',
+    license='MIT',
+    author='Shadab Zafar',
+    author_email='dufferzafar0@gmail.com',
+    install_requires=[
         'docopt',
         'mutagen'
     ],
-    'scripts': [
+    scripts=[
         'bin/tagtool',
         'bin/tagfix'
     ],
-}
-
-setup(**config)
+    classifiers=[
+          'Environment :: Console',
+          'License :: OSI Approved :: MIT License',
+          'Operating System :: MacOS :: MacOS X',
+          'Operating System :: Unix',
+          'Operating System :: POSIX',
+          'Programming Language :: Python',
+          'Programming Language :: Python :: 2.7',
+          'Programming Language :: Python :: 3.4',
+    ],
+)
