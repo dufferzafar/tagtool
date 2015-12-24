@@ -1,4 +1,4 @@
-import tagtool
+from tagtool.version import __VERSION__
 
 try:
     from setuptools import setup
@@ -8,7 +8,7 @@ except ImportError:
 setup(
     name='tagtool',
     packages=['tagtool'],
-    version=tagtool.version,
+    version=__VERSION__,
     description='Tagtool allows you to perform mass ID3 tag cleaning operations.',
     long_description=open('Readme.md').read(),
     url='https://github.com/dufferzafar/tagtool',

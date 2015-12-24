@@ -19,6 +19,7 @@ import textwrap
 from docopt import docopt
 
 import tagtool
+from tagtool.version import __VERSION__
 
 
 def _get_doc(command):
@@ -30,7 +31,7 @@ def _get_doc(command):
 if __name__ == '__main__':
     old_args = docopt(
         __doc__,
-        version="tagtool version " + tagtool.version,
+        version="tagtool version " + __VERSION__,
         options_first=True,
     )
     argv = [old_args['<command>']] + old_args['<args>']
