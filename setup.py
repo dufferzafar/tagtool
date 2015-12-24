@@ -1,4 +1,5 @@
-execfile("tagtool/version.py")
+with open("tagtool/version.py") as fp:
+    exec(fp)
 
 try:
     from setuptools import setup
