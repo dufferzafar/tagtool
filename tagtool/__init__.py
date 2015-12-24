@@ -26,8 +26,7 @@ def _process(files, func, args, skip_tagged=True, needs_file=False):
             func(file=file, tags=tags, **args)
         else:
             func(tags=tags, **args)
-
-        tags.save()
+            tags.save()
 
 
 def replace(files, **kwargs):
