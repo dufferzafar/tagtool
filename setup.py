@@ -5,12 +5,18 @@ try:
 except ImportError:
     from distutils.core import setup
 
+try:
+    import pypandoc
+    long_description = pypandoc.convert('Readme.md', 'rst')
+except(IOError, ImportError):
+    long_description = open('Readme.md').read()
+
 setup(
     name='tagtool',
     packages=['tagtool'],
     version=__VERSION__,
     description='Tagtool allows you to perform mass ID3 tag cleaning operations.',
-    long_description=open('Readme.md').read(),
+    long_description=long_description,
     url='https://github.com/dufferzafar/tagtool',
     license='MIT',
     author='Shadab Zafar',
