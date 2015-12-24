@@ -1,7 +1,7 @@
 
 # tagtool
 
-Mass clean metadata of downloaded MP3 songs.
+Tagtool is a quick and easy-to-use tool for mass editing and cleaning metadata across your MP3 collection. 
 
 I wrote the initial version as a [simple script](https://github.com/dufferzafar/tagtool/blob/old/tagfix.py) that just worked. This tool later became an exercise in command line application design as I'd never done it before. It uses [docopt](http://docopt.org/) (along with some hackery to allow sub-commands)
 
@@ -72,7 +72,7 @@ Examples:
 **`rename`**
 
 ```
-Rename a file with it's track title.
+Rename a file with its track title.
 
 Usage:
     tagtool rename <file>...
@@ -86,4 +86,4 @@ Examples:
 
 ## tagfix
 
-Tagfix is a script that uses the available tagtool commands as building blocks and performs multiple cleaning operation on files in one pass. If you download music from sites like [songspk](http://songspk.cc/), [djmaza](www.djmaza.info/) etc. then this script is for you. It removes all mention of these websites from the tags.
+Tagfix is a script that uses the available tagtool commands as building blocks and performs multiple cleaning operation on files in one pass. If you download music from sites like [songspk](http://songspk.cc/) and [djmaza](http://www.djmaza.info/), this script is for you. It removes all mentions of these websites from the tags.
