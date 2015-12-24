@@ -76,6 +76,9 @@ def rename(file, tags):
     Usage:
         tagtool rename <file>...
 
+    Options:
+        <file>                       MP3 file(s) to process
+
     Examples:
         tagtool rename *.mp3
     """

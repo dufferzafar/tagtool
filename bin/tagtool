@@ -1,13 +1,10 @@
 #!/usr/bin/env python
 
 """
-ID3 Tag Tool
-
 Usage:
     tagtool [--no-skip] <command> [<args>...]
 
 Commands:
-    coverart    Extract coverart of a file as 'cover.jpg'
     replace     Perform regex replace on tags
     remove      Remove tag frames
     rename      Rename files to format: "%TrackTitle%.mp3"
@@ -15,9 +12,6 @@ Commands:
 
 Options:
     --no-skip   Do not skip already tagged files
-
-Examples:
-    tagtool extract --frame=<tag> <file> [--output=<file>]
 """
 
 import textwrap
