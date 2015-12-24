@@ -1,4 +1,4 @@
-from tagtool.version import __VERSION__
+execfile("tagtool/version.py")
 
 try:
     from setuptools import setup
