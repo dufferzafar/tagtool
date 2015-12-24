@@ -6,11 +6,11 @@ from mutagen.id3 import TextFrame
 
 
 def replace(tags, pattern, repl='', prune=True, frames=[], frames_skip=[]):
-    """
+    r"""
     Perform regex replace on tags like artist name, track title etc.
 
     Usage:
-        tagtool replace --pattern=<pattern> --repl=<replacement> <file>...
+        tagtool replace --pattern=<pattern> [--repl=<replacement>] <file>...
                         [--prune] [--frames=<tags>] [--frames_skip=<tags>]
 
     Options:
@@ -25,8 +25,6 @@ def replace(tags, pattern, repl='', prune=True, frames=[], frames_skip=[]):
     Examples:
         tagtool replace --pattern='\s+\d+\s+' --repl='' --prune SomeSong.mp3 --frames_skip=TOPE,TIT2
     """
-
-    # for file in files:
 
     for key in list(tags.keys()):
 
@@ -43,7 +41,7 @@ def replace(tags, pattern, repl='', prune=True, frames=[], frames_skip=[]):
 
 
 def remove(tags, frames, prefix=True):
-    """
+    r"""
     Remove tag frames.
 
     Usage:
@@ -62,7 +60,7 @@ def remove(tags, frames, prefix=True):
     for key in list(tags.keys()):
 
         if prefix:
-            if key.startswith(frames):
+            if key.startswith(tuple(frames)):
                 del tags[key]
         else:
             if key in frames:
@@ -72,7 +70,7 @@ def remove(tags, frames, prefix=True):
 # TODO: Support patterns like
 # %title% - %artist%
 def rename(file, tags):
-    """
+    r"""
     Rename a file with it's track title.
 
     Usage:

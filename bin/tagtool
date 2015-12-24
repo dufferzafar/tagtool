@@ -4,7 +4,7 @@
 ID3 Tag Tool
 
 Usage:
-    tagtool <command> [<args>...]
+    tagtool [--no-skip] <command> [<args>...]
 
 Commands:
     coverart    Extract coverart of a file as 'cover.jpg'
@@ -12,6 +12,9 @@ Commands:
     remove      Remove tag frames
     rename      Rename files to format: "%TrackTitle%.mp3"
     help        Read about a specific command
+
+Options:
+    --no-skip   Do not skip already tagged files
 
 Examples:
     tagtool extract --frame=<tag> <file> [--output=<file>]
@@ -25,16 +28,18 @@ import tagtool
 
 
 def _get_doc(command):
-    return textwrap.dedent(getattr(tagtool, command).__doc__).strip()
+    return textwrap.dedent(
+        getattr(tagtool.commands, command).__doc__
+    )
 
 
 if __name__ == '__main__':
-    args = docopt(__doc__, options_first=True, version='ID3 Tag Tool 0.2.1')
-    argv = [args['<command>']] + args['<args>']
+    old_args = docopt(__doc__, options_first=True, version='ID3 Tag Tool 0.7')
+    argv = [old_args['<command>']] + old_args['<args>']
 
     command = argv[0]
     if command == 'help':
-        if not args['<args>']:
+        if not old_args['<args>']:
             exit(textwrap.dedent(__doc__).strip())
 
         if hasattr(tagtool, argv[1]):
@@ -43,15 +48,16 @@ if __name__ == '__main__':
             exit("%r is not a tagtool command. See 'tagtool help'." % argv[1])
 
     if not hasattr(tagtool, command):
-        exit(textwrap.dedent(__doc__).strip())
+        exit("%r is not a tagtool command. See 'tagtool help'." % command)
 
     args = docopt(_get_doc(command), argv=argv)
 
     if command == 'replace':
         tagtool.replace(
-            tags=args['<file>'],
+            files=args['<file>'],
             pattern=args['--pattern'],
-            repl=args['--repl'],
+            repl=args['--repl']
+            if args['--repl'] else '',
             prune=args['--prune'],
             frames=args['--frames'].split(',')
             if args['--frames'] else [],
@@ -61,10 +67,19 @@ if __name__ == '__main__':
 
     elif command == 'remove':
         tagtool.remove(
-            tags=args['<file>'],
+            files=args['<file>'],
             frames=args['--frames'].split(',') if args['--frames'] else [],
             prefix=args['--prefix']
         )
 
     elif command == 'rename':
-        tagtool.rename(args['<file>'])
+        tagtool.rename(
+            files=args['<file>'],
+            skip_tagged=not old_args['--no-skip']
+        )
+
+    elif command == 'cover':
+        tagtool.cover(
+            files=args['<file>'],
+            frames=args['frame'],
+        )
