@@ -83,7 +83,10 @@ def rename(file, tags):
         tagtool rename *.mp3
     """
 
-    new_path = os.path.join(os.path.dirname(file),
-                            "%s.mp3" % tags['TIT2'])
-    os.rename(file, new_path)
-    return new_path
+    if 'TIT2' in tags:
+        new_path = os.path.join(os.path.dirname(file),
+                                "%s.mp3" % tags['TIT2'])
+        os.rename(file, new_path)
+        return new_path
+    else:
+        return file
