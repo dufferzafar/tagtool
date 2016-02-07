@@ -6,6 +6,7 @@ Usage: tagfix <file>...
 """
 
 import re
+from collections import namedtuple
 
 from docopt import docopt
 from mutagen.mp3 import MP3
@@ -39,6 +40,19 @@ RE_WEBSITE = re.compile(r"""
     (?:\]|\)|::)?                            # Block Ends
 """)
 
+removal = namedtuple('removal', ['pattern', 'frames', 'frames_skip'])
+
+removals = [
+    # Remove all instances of a website regex in all frames
+    removal(RE_WEBSITE,                [],             FRAMES_SKIP),
+
+    # Convert Composer from "Music: {Artist Name}" to "{Artist Name}"
+    removal(r"Music\:\s+",             ["TPE2"],       []),
+
+    # Convert "{Album Name} ({Year})" to "{Album Name}"
+    removal(r"\s+\(\d+\)(?:\s+)?",     ["TALB"],       [])
+]
+
 
 if __name__ == '__main__':
 
@@ -70,30 +84,14 @@ if __name__ == '__main__':
             prefix=True
         )
 
-        # Remove all instances of a website regex in all frames
-        tagtool.commands.replace(
-            tags=tags,
-            pattern=RE_WEBSITE,
-            repl="",
-            frames_skip=FRAMES_SKIP
-        )
-
-        # Composer is usually given as "Music: {Artist Name}"
-        # Convert it to "{Artist Name}"
-        tagtool.commands.replace(
-            tags=tags,
-            pattern=r"Music\:\s+",
-            repl="",
-            frames=["TPE2"]
-        )
-
-        # Convert "{Album Name} ({Year})" to "{Album Name}"
-        tagtool.commands.replace(
-            tags=tags,
-            pattern=r"\s+\(\d+\)(?:\s+)?",
-            repl="",
-            frames=["TALB"]
-        )
+        for removal in removals:
+            tagtool.commands.replace(
+                tags=tags,
+                pattern=removal.pattern,
+                repl="",
+                frames=removal.frames,
+                frames_skip=removal.frames_skip,
+            )
 
         # Fingers crossed!
         tags.save()
