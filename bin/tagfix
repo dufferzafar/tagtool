@@ -75,8 +75,24 @@ if __name__ == '__main__':
             tags=tags,
             pattern=RE_WEBSITE,
             repl="",
-            prune=True,
             frames_skip=FRAMES_SKIP
+        )
+
+        # Composer is usually given as "Music: {Artist Name}"
+        # Convert it to "{Artist Name}"
+        tagtool.commands.replace(
+            tags=tags,
+            pattern=r"Music\:\s+",
+            repl="",
+            frames=["TPE2"]
+        )
+
+        # Convert "{Album Name} ({Year})" to "{Album Name}"
+        tagtool.commands.replace(
+            tags=tags,
+            pattern=r"\s+\(\d+\)(?:\s+)?",
+            repl="",
+            frames=["TALB"]
         )
 
         # Fingers crossed!
