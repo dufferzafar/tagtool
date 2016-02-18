@@ -98,6 +98,12 @@ if __name__ == '__main__':
                 frames_skip=removal.frames_skip,
             )
 
+        # Fix case of some tags
+        tagtool.commands.case(
+            tags=tags,
+            frames=["TALB", "TIT2", "TPE1"],
+        )
+
         # Fingers crossed!
         tags.save()
 
