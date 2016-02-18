@@ -2,6 +2,8 @@
 
 """ID3 Tag Fixer.
 
+Made with bollywood songs (downloaded from some Indian sites) in mind.
+
 Usage: tagfix <file>...
 """
 
@@ -36,7 +38,7 @@ RE_WEBSITE = re.compile(r"""
     (?:www.)?
     [\w]+                                    # Sitename
     \.
-    (?:cc|com|info|in|se|site|me|mobi|pk)
+    (?:cc|com|city|info|in|se|site|me|mobi|pk)
     (?:\]|\)|::)?                            # Block Ends
 """)
 
@@ -46,11 +48,14 @@ removals = [
     # Remove all instances of a website regex in all frames
     removal(RE_WEBSITE,                [],             FRAMES_SKIP),
 
+    # Remove any digits from the track title
+    removal(r"\d+\s+-\s+",     ["TIT2"],       []),
+
     # Convert Composer from "Music: {Artist Name}" to "{Artist Name}"
     removal(r"Music\:\s+",             ["TPE2"],       []),
 
     # Convert "{Album Name} ({Year})" to "{Album Name}"
-    removal(r"\s+\(\d+\)(?:\s+)?",     ["TALB"],       [])
+    removal(r"\s+\(\d+\)(?:\s+)?",     ["TALB"],       []),
 ]
 
 
@@ -67,7 +72,7 @@ if __name__ == '__main__':
             continue
 
         if tagtool.is_tagged(tags):
-            new_name = tagtool.rename(file, tags)
+            new_name = tagtool.commands.rename(file, tags)
             print("Already tagged: %s " % new_name)
             continue
 
