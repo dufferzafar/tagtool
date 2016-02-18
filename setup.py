@@ -11,6 +11,8 @@ try:
     long_description = pypandoc.convert('Readme.md', 'rst')
 except(IOError, ImportError):
     long_description = open('Readme.md').read()
+except(IOError):
+    pass
 
 setup(
     name='tagtool',
