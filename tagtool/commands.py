@@ -90,3 +90,31 @@ def rename(file, tags):
         return new_path
     else:
         return file
+
+
+def case(tags, frames=[], frames_skip=[]):
+    r"""
+    Title case all text fields.
+
+    Usage:
+        tagtool case <file>...
+                     [--frames=<tags>] [--frames_skip=<tags>]
+
+    Options:
+        <file>                       MP3 file(s) to process
+        --frames=<frames>            Comma separated list of frames to
+                                     restrict replacement to
+        --frames_skip=<frames>       Comma separated list of frames to skip
+
+    Examples:
+        tagtool case *.mp3
+    """
+
+    for key in list(tags.keys()):
+
+        if ((frames and key not in frames)
+                or (frames_skip and key in frames_skip)
+                or not isinstance(tags[key], TextFrame)):
+            continue
+
+        tags[key].text = [str(tags[key].text[0]).title()]

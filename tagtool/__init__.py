@@ -40,3 +40,7 @@ def remove(files, **kwargs):
 def rename(files, skip_tagged=True, **kwargs):
     _process(files, commands.rename, kwargs,
              skip_tagged=skip_tagged, needs_file=True)
+
+
+def case(files, **kwargs):
+    _process(files, commands.case, kwargs)

@@ -1,10 +1,10 @@
 #!/usr/bin/env python
 
 """
-Usage:
-    tagtool [--no-skip] <command> [<args>...]
+Usage: tagtool [--no-skip] <command> [<args>...]
 
 Commands:
+    case        Title case tags
     replace     Perform regex replace on tags
     remove      Remove tag frames
     rename      Rename files to format: "%TrackTitle%.mp3"
@@ -75,6 +75,15 @@ if __name__ == '__main__':
         tagtool.rename(
             files=args['<file>'],
             skip_tagged=not old_args['--no-skip']
+        )
+
+    elif command == 'case':
+        tagtool.case(
+            files=args['<file>'],
+            frames=args['--frames'].split(',')
+            if args['--frames'] else [],
+            frames_skip=args['--frames_skip'].split(',')
+            if args['--frames_skip'] else [],
         )
 
     elif command == 'cover':
