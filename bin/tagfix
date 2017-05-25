@@ -25,7 +25,7 @@ FRAMES_REMOVE = [
 ]
 
 FRAMES_REMOVE_PREFIX = [
-    "COMM", "POPM", "USLT", "WCOM", "WOAR", "WXXX", "XXX",
+    "COMM", "POPM", "USLT", "WCOM", "WOAR", "WXXX", "XXX", "TXXX"
 ]
 
 # A regular expression that matches websites I download music from:
@@ -38,7 +38,7 @@ RE_WEBSITE = re.compile(r"""
     (?:www.)?
     [\w]+                                    # Sitename
     \.
-    (?:cc|com|city|info|in|se|site|me|mobi|pk)
+    (?:cc|com|cool|click|city|desi|info|in|link|live|life|se|site|me|mobi|name|net|pk)
     (?:\]|\)|::)?                            # Block Ends
 """)
 
