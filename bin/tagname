@@ -1,0 +1,56 @@
+#!/usr/bin/env python
+
+"""Tags from filenames.
+
+Usage: tagname <file>...
+"""
+
+import re
+import os
+
+from docopt import docopt
+
+from mutagen.id3 import ID3, TIT2, TPE1, ID3NoHeaderError
+# from mutagen.mp3 import MP3
+
+import tagtool
+
+
+def youtube_name(tags, filepath):
+    _, filename = os.path.split(os.path.splitext(filepath)[0])
+    # Replace text in brackets
+    name = re.sub(r"(?:\(|\[).*?(?:\)|\])", "", filename)
+    # Replace multiple space with single one
+    name = re.sub(r"\s+", " ", name)
+    # Replace all quotes
+    # name = re.sub(r"(?:\'|\")", "", name)
+    # Avoid Unicode Shit
+    name = name.decode('utf-8', 'ignore')
+    # Break into Artist - Track
+    m = re.match(r"(.*)\s+-\s+(.*)", name)
+    if m:
+        tags["TPE1"] = TPE1(encoding=3, text=m.group(1).title())
+        tags["TIT2"] = TIT2(encoding=3, text=m.group(2).title())
+
+
+if __name__ == '__main__':
+    args = docopt(__doc__, version='Tag from filename 0.2')
+
+    for file in args['<file>']:
+
+        # Create ID3 tag if not exists
+        try:
+            tags = ID3(file)
+        except ID3NoHeaderError:
+            print "Adding ID3 header;",
+            tags = ID3()
+
+        youtube_name(tags, file)
+
+        # print(tags.pprint())
+        tags.save()
+
+        # Rename the file
+        new_name = tagtool.commands.rename(file, tags)
+
+        print("Processed:\t%s" % new_name)
