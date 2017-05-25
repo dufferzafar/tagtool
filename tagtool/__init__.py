@@ -26,7 +26,10 @@ def _process(files, func, args, skip_tagged=False, needs_file=False):
             func(file=file, tags=tags, **args)
         else:
             func(tags=tags, **args)
-            tags.save()
+            try:
+                tags.save()
+            except UnicodeError:
+                continue
 
 
 def replace(files, **kwargs):
