@@ -90,22 +90,31 @@ if __name__ == '__main__':
         )
 
         for removal in removals:
-            tagtool.commands.replace(
-                tags=tags,
-                pattern=removal.pattern,
-                repl="",
-                frames=removal.frames,
-                frames_skip=removal.frames_skip,
-            )
+            try:
+                tagtool.commands.replace(
+                    tags=tags,
+                    pattern=removal.pattern,
+                    repl="",
+                    frames=removal.frames,
+                    frames_skip=removal.frames_skip,
+                )
+            except UnicodeError:
+                continue
 
         # Fix case of some tags
-        tagtool.commands.case(
-            tags=tags,
-            frames=["TALB", "TIT2", "TPE1"],
-        )
+        try:
+            tagtool.commands.case(
+                tags=tags,
+                frames=["TALB", "TIT2", "TPE1"],
+            )
+        except UnicodeError:
+            continue
 
         # Fingers crossed!
-        tags.save()
+        try:
+            tags.save()
+        except UnicodeError:
+            continue
 
         # Rename the file
         new_name = tagtool.commands.rename(file, tags)
