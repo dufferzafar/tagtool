@@ -5,7 +5,7 @@ from . import commands
 from .is_tagged import is_tagged
 
 
-def _process(files, func, args, skip_tagged=True, needs_file=False):
+def _process(files, func, args, skip_tagged=False, needs_file=False):
     """ Apply func to ID3 tags of files. """
 
     for file in files:
@@ -37,7 +37,7 @@ def remove(files, **kwargs):
     _process(files, commands.remove, kwargs)
 
 
-def rename(files, skip_tagged=True, **kwargs):
+def rename(files, skip_tagged=False, **kwargs):
     _process(files, commands.rename, kwargs,
              skip_tagged=skip_tagged, needs_file=True)
 
