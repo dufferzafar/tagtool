@@ -15,20 +15,24 @@ from mutagen.mp3 import MP3
 
 import tagtool
 
+# Do not touch these tags
 FRAMES_SKIP = [
     "APIC:",
 ]
 
+# Remove these tags
 FRAMES_REMOVE = [
     "TCOM", "TCON", "TCOP", "TCMP", "TENC", "TMED", "TPOS", "TPUB", "TRCK",
     "TSOT", "TSSE", "WFED", "WOAF", "WOAS", "WORS",
 ]
 
+# Remove tags beginning with these prefixes
 FRAMES_REMOVE_PREFIX = [
     "COMM", "POPM", "USLT", "WCOM", "WOAR", "WXXX", "XXX", "TXXX"
 ]
 
-# A regular expression that matches websites I download music from:
+# A regular expression that matches websites I download music from
+# It is used to remove all occurrences of the site's name from all tags
 RE_WEBSITE = re.compile(r"""
     (?ix)                                    # IgnoreCase & Verbose
     \s*
@@ -42,6 +46,7 @@ RE_WEBSITE = re.compile(r"""
     (?:\]|\)|::)?                            # Block Ends
 """)
 
+# Other cleanups
 removal = namedtuple('removal', ['pattern', 'frames', 'frames_skip'])
 
 removals = [
