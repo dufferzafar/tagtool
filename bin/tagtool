@@ -5,6 +5,7 @@ Usage: tagtool [--no-skip] <command> [<args>...]
 
 Commands:
     case        Title case tags
+    ls          List the tags
     replace     Perform regex replace on tags
     remove      Remove tag frames
     rename      Rename files to format: "%TrackTitle%.mp3"
