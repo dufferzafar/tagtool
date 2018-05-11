@@ -86,7 +86,12 @@ def rename(file, tags):
     if 'TIT2' in tags:
         new_path = os.path.join(os.path.dirname(file),
                                 "%s.mp3" % str(tags['TIT2']).replace('/', '_'))
+
+        if os.path.exists(new_path):
+            raise OSError
+
         os.rename(file, new_path)
+
         return new_path
     else:
         return file

@@ -74,12 +74,17 @@ if __name__ == '__main__':
         try:
             tags = MP3(file)
         except:
-            print("Couldn't read: %s" % file)
+            print("Can't Read: %s" % file)
             continue
 
-        if tagtool.is_tagged(tags):
-            new_name = tagtool.commands.rename(file, tags)
-            print("Already tagged: %s " % new_name)
+        if not args['-f'] and tagtool.is_tagged(tags):
+            try:
+                new_name = tagtool.commands.rename(file, tags)
+            except OSError:
+                print("Already Exists:\t%s" % file)
+            else:
+                print("Already Tagged: %s " % new_name)
+
             continue
 
         # Remove certain kinds of frames
@@ -95,7 +100,9 @@ if __name__ == '__main__':
             prefix=True
         )
 
+        # Other misc cleanups
         for removal in removals:
+            # print("Applying", removal)
             try:
                 tagtool.commands.replace(
                     tags=tags,
@@ -123,6 +130,12 @@ if __name__ == '__main__':
             continue
 
         # Rename the file
-        new_name = tagtool.commands.rename(file, tags)
+        try:
+            new_path = tagtool.commands.rename(file, tags)
+            print("Processed:\t%s" % new_path)
 
-        print("Processed:\t%s" % new_name)
+        # TODO: What if the file doesn't have title tag?
+        # except ValueError:
+
+        except OSError:
+            print("Already Exists:\t%s" % file)
