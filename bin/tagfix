@@ -42,7 +42,7 @@ RE_WEBSITE = re.compile(r"""
     (?:www.)?
     [\w]+                                    # Sitename
     \.
-    (?:cc|com|cool|click|city|desi|info|in|link|live|life|se|site|me|mobi|name|net|pk)
+    (?:cc|com|cool|click|city|desi|fun|info|in|link|live|life|se|site|me|mobi|name|net|pk)
     (?:\]|\)|::)?                            # Block Ends
 """)
 
