@@ -1,10 +1,11 @@
 #!/usr/bin/env python
 
-"""ID3 Tag Fixer.
+"""
+ID3 Tag Fixer.
 
 Made with bollywood songs (downloaded from some Indian sites) in mind.
 
-Usage: tagfix <file>...
+Usage: tagfix [-f] <file>...
 """
 
 import re
@@ -51,16 +52,16 @@ removal = namedtuple('removal', ['pattern', 'frames', 'frames_skip'])
 
 removals = [
     # Remove all instances of a website regex in all frames
-    removal(RE_WEBSITE,                [],             FRAMES_SKIP),
+    removal(RE_WEBSITE,                [],             FRAMES_SKIP),  # noqa
 
     # Remove any digits from the track title
-    removal(r"\d+\s+-\s+",     ["TIT2"],       []),
+    removal(r"\d+\s+-\s+",             ["TIT2"],       []),           # noqa
 
     # Convert Composer from "Music: {Artist Name}" to "{Artist Name}"
-    removal(r"Music\:\s+",             ["TPE2"],       []),
+    removal(r"Music\:\s+",             ["TPE2"],       []),           # noqa
 
     # Convert "{Album Name} ({Year})" to "{Album Name}"
-    removal(r"\s+\(\d+\)(?:\s+)?",     ["TALB"],       []),
+    removal(r"\s+\(\d+\)(?:\s+)?",     ["TALB"],       []),           # noqa
 ]
 
 
