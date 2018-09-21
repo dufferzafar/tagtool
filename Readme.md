@@ -6,9 +6,9 @@ I wrote the initial version as a [simple script](https://github.com/dufferzafar/
 
 ## install
 
-`pipsi install git+https://github.com/dufferzafar/tagtool#egg=tagtool`
+Use [`pipsi`](https://github.com/mitsuhiko/pipsi) to install:
 
-You could also use [`pipsi`](https://github.com/mitsuhiko/pipsi) to install.
+`pipsi install git+https://github.com/dufferzafar/tagtool#egg=tagtool`
 
 ## usage
 
