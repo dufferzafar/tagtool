@@ -89,4 +89,17 @@ Tagfix is a script that uses the available tagtool commands as building blocks a
 
 ### usage
 
-Tagfix excepts path to a single file like `tagfix <path-to-.mp3 file>` but you can run it on directories like `tagfix /path/to/directory/**/.mp3`
+```bash
+
+# Fix tags of a single file
+tagfix /path/to/file.mp3
+
+# Fix tags of all files in a folder
+tagfix /path/to/folder/*.mp3
+
+# Fix tags of all files in a folder
+# (this also recurses into subfolders)
+# (but will only work if your shell supports 'recursive globbing')
+# (zsh, fish etc. do)
+tagfix /path/to/folder/**/*.mp3
+```
