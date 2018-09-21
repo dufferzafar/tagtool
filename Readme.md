@@ -86,3 +86,7 @@ Examples:
 ## tagfix
 
 Tagfix is a script that uses the available tagtool commands as building blocks and performs multiple cleaning operation on files in one pass. If you download music from sites like [songspk](http://songspk.cc/) and [djmaza](http://www.djmaza.info/), this script is for you. It removes all mentions of these websites from the tags.
+
+### usage
+
+Tagfix excepts path to a single file like `tagfix <path-to-.mp3 file>` but you can run it on directories like `tagfix /path/to/directory/**/.mp3`
