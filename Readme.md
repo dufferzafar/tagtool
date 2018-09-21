@@ -1,13 +1,12 @@
-
 # tagtool
 
-Tagtool is a quick and easy-to-use tool for mass editing and cleaning metadata across your MP3 collection. 
+Tagtool is a quick and easy-to-use tool for mass editing and cleaning metadata across your MP3 collection.
 
 I wrote the initial version as a [simple script](https://github.com/dufferzafar/tagtool/blob/old/tagfix.py) that just worked. This tool later became an exercise in command line application design as I'd never done it before. It uses [docopt](http://docopt.org/) (along with some hackery to allow sub-commands)
 
 ## install
 
-`pip install tagtool`
+`pipsi install git+https://github.com/dufferzafar/tagtool#egg=tagtool`
 
 You could also use [`pipsi`](https://github.com/mitsuhiko/pipsi) to install.
 
